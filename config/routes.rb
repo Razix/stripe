@@ -1,4 +1,10 @@
 StripeApp::Application.routes.draw do
+
+  devise_for :users
+  resources :plans
+
+  root to: 'plans#index'
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
