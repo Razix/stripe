@@ -1,2 +1,12 @@
-%h1 Plans#index
-%p Find me in app/views/plans/index.html.haml
+#plans
+  %h2 Choose one
+  - @plans.each do |plan|
+    .plan
+      .name= plan.name
+      .details
+        .price
+          = number_to_currency plan.price, precision: 0
+        .per_month per month
+        .signup
+          = link_to "Sign up", new_user_registration_path(:plan_id => plan.id)
+  .clear
