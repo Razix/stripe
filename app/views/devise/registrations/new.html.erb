@@ -13,6 +13,7 @@
   <%= f.password_field :password_confirmation %></div>
 
   <h3>Credit card information</h3>
+  <%= f.hidden_field :plan_id %>
   <%= f.hidden_field :stripe_card_token %>
   <div>
       <%= label_tag :card_number, "Credit Card Number " %>

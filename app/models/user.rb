@@ -6,13 +6,13 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :stripe_card_token
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :stripe_card_token, :plan_id
   # attr_accessible :title, :body
   attr_accessor :stripe_card_token
 
   def save_with_payment
     if valid?
-      customer = Stripe::Customer.create(description:email, card: stripe_card_token)
+      customer = Stripe::Customer.create(description: email, plan: plan_id, card: stripe_card_token)
       self.stripe_customer_token = customer.id
       save!
     end

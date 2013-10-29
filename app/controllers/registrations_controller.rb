@@ -1,4 +1,11 @@
 class RegistrationsController < Devise::RegistrationsController
+
+  def new
+    @plan = Plan.find(params[:plan_id])
+    build_resource({plan_id: @plan.id})
+    respond_with self.resource
+  end
+
   def create
     build_resource(sign_up_params)
 
