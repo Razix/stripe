@@ -10,8 +10,8 @@
         .signup
           = link_to "Go to my plan", plan_path(current_user.plan), class: 'btn btn-primary'
   - else
+    %h2 Choose one!
     - @plans.each do |plan|
-      %h2 Choose one!
       .plan
         .name= plan.name
         .details
