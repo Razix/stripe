@@ -4,7 +4,7 @@ $ ->
 
 user =
   setupForm: ->
-    $('#new_user').submit ->
+    $('#new_user, #edit_user').submit ->
       $('input[type=submit]').attr('disabled', true)
       user.processCard()
       false
@@ -20,7 +20,7 @@ user =
   handleStripeResponse: (status, response) ->
     if status == 200
       $('#user_stripe_card_token').val(response.id)
-      $('#new_user')[0].submit()
+      $('#new_user, #edit_user')[0].submit()
     else
       $('#stripe_error').text(response.error.message)
       $('input[type=submit]').attr('disabled', false)
