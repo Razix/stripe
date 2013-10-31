@@ -19,57 +19,41 @@
   <div><%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i><br />
   <%= f.password_field :current_password %></div>
 
-<!--   <h3>Add new card:</h3>
-  <%= f.hidden_field :stripe_card_token %>
-  <div>
-      <%= label_tag :card_number, "Credit Card Number " %>
-      <%= text_field_tag :card_number, nil, name: nil %>
-  </div>
-  <div>
-      <%= label_tag :card_code, "Security Code on Card (CVV)" %>
-      <%= text_field_tag :card_code, nil, name: nil %>
-  </div>
-  <div>
-    <%= label_tag :card_month, "Card Expiration" %>
-    <%= select_month nil, {add_month_numbers_true: true}, {name: nil, id: "card_month"}%>
-    <%= select_year nil, {start_year: Date.today.year, end_year: Date.today.year+15}, {name: nil, id: "card_year"}%>
-  </div>
-
-  <div id="stripe_error">
-    <noscript>JavaScript is not enabled and is required for this form. First enable it in your web browser settings.</noscript>
-  </div> -->
-
-  <div><%= f.submit "Update" %></div>
+  <div><%= f.submit "Update", class: "btn btn-primary" %></div>
 <% end %>
 
 <h3>Cancel my account</h3>
 
-<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, method: :delete %></p>
+<p>Unhappy? <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, class: "btn btn-primary", method: :delete %></p>
 
-<h3>Subscription Plan</h3>
+<h3>Subscription</h3>
 <p>
-  <%= @user.plan.name.titleize %>
+  <p><span class="customer-details">Status:</span> <%= @subscription.status.titleize %></p>
+  <p><span class="customer-details">Plan:</span> <%= @subscription.plan.name.titleize %></p>
   <a data-toggle="modal" href="#plan-options" class="btn btn-mini" type="button">Change plan</a>
 </p>
 
 <div id="plan-options" class="modal" style="display: none;">
-  <%= form_for resource, :as => resource_name, :url => update_plan_path, :html => {:method => :put, id: 'update_plan', :class => 'form-horizontal' } do |f| %>
+  <%= form_for resource, as: resource_name, url: update_plan_path, html: {method: :put, id: 'update_plan', class: 'form-horizontal' } do |f| %>
     <div class="modal-header">
       <a class="close" data-dismiss="modal">&#215;</a>
       <h3>Change Plan</h3>
     </div>
     <div class="modal-body">
-      <%= f.collection_select :plan_id, Plan.all, :id, :name, :prompt => true %>
+      <%= f.collection_select :plan_id, Plan.all, :id, :name, prompt: true %>
     </div>
     <div class="modal-footer">
-      <%= f.submit "Change Plan", :class => "btn btn-primary" %>
+      <%= f.submit "Change Plan", class: "btn btn-primary" %>
       <a class="btn" data-dismiss="modal" href="#">Close</a>
     </div>
   <% end %>
 </div>
 
-<h3>Card</h3>
+<h3>Card Details</h3>
 <p>
+  <p><span class="customer-details">Number:</span> **** **** **** <%= @card.last4 %></p>
+  <p><span class="customer-details">Expires:</span> <%= @card.exp_month %> / <%= @card.exp_year %></p>
+  <p><span class="customer-details">Type:</span> <%= @card.type %></p>
   <a data-toggle="modal" href="#card-data" class="btn btn-mini" type="button">Change card</a>
 </p>
 
@@ -102,4 +86,3 @@
   <% end %>
 </div>
 
-<%= link_to "Back", :back %>

@@ -1,4 +1,5 @@
 class RegistrationsController < Devise::RegistrationsController
+  before_filter :load_customer, only: [:edit, :update_card, :update_plan]
 
   def new
     @plan = Plan.find(params[:plan_id])
@@ -25,19 +26,30 @@ class RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  def edit
+    @card = @customer.cards.first
+    @subscription = @customer.subscription
+    render :edit
+  end
+
   def update_card
-    customer = Stripe::Customer.retrieve(current_user.stripe_customer_token)
-    customer.card = params[:user][:stripe_card_token]
-    customer.save
-    redirect_to edit_user_registration_path, :notice => 'Updated card.'
+    @customer.card = params[:user][:stripe_card_token]
+    @customer.save
+    redirect_to edit_user_registration_path, notice: 'Updated card.'
   end
 
   def update_plan
     if current_user.update_attributes(params[:user])
-      customer = Stripe::Customer.retrieve(current_user.stripe_customer_token)
-      customer.plan = current_user.plan.id
-      customer.save
-      redirect_to edit_user_registration_path, :notice => 'Updated plan.'
+      @customer.plan = current_user.plan.id
+      @customer.save
+      redirect_to edit_user_registration_path, notice: 'Updated plan.'
     end
   end
+
+  private
+
+    def load_customer
+      @customer = Stripe::Customer.retrieve(current_user.stripe_customer_token)
+    end
+
 end
