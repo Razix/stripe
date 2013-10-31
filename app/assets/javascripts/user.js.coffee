@@ -24,3 +24,8 @@ user =
     else
       $('#stripe_error').text(response.error.message)
       $('input[type=submit]').attr('disabled', false)
+$ ->
+  if $('.no-subscriptions')[0]
+    $('#change-plan-button').text('Subscribe now')
+  else
+    $('#change-plan-button').text('Change plan')

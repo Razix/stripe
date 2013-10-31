@@ -2,13 +2,16 @@
   - if user_signed_in?
     %h2 Thanks for choosing us!
     .plan
-      .name= current_user.plan.name
-      .details
-        .price
-          = number_to_currency current_user.plan.price, precision: 0
-        .per_month per month
-        .signup
-          = link_to "Go to my plan", plan_path(current_user.plan), class: 'btn btn-primary'
+      - if current_user.plan
+        .name= current_user.plan.name
+        .details
+          .price
+            = number_to_currency current_user.plan.price, precision: 0
+          .per_month per month
+          .signup
+            = link_to "Go to my plan", plan_path(current_user.plan), class: 'btn btn-primary'
+      - else
+        .name You currenty have no subscriptions... Please visit your #{link_to 'Edit profile', edit_user_registration_path} to subscribe.
   - else
     %h2 Choose one!
     - @plans.each do |plan|

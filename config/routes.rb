@@ -4,6 +4,7 @@ StripeApp::Application.routes.draw do
   devise_scope :user do
     put 'update_card', to: 'registrations#update_card'
     put 'update_plan', to: 'registrations#update_plan'
+    put 'cancel_subscription', to: 'registrations#cancel_subscription'
   end
   resources :plans
 

@@ -25,6 +25,6 @@ class PlansController < ApplicationController
   private
 
     def root_redirection
-      redirect_to root_path unless current_user
+      redirect_to root_path unless current_user && current_user.plan
     end
 end
