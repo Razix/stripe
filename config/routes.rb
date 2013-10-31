@@ -1,6 +1,9 @@
 StripeApp::Application.routes.draw do
 
   devise_for :users, controllers: {registrations: 'registrations'}
+  devise_scope :user do
+    put 'update_card', :to => 'registrations#update_card'
+  end
   resources :plans
 
   root to: 'plans#index'
