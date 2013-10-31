@@ -35,19 +35,18 @@ class RegistrationsController < Devise::RegistrationsController
   def update_card
     @customer.card = params[:user][:stripe_card_token]
     @customer.save
-    redirect_to edit_user_registration_path, notice: 'Updated card.'
+    redirect_to edit_user_registration_path, notice: 'Card is updated.'
   end
 
   def update_plan
     if current_user.update_attributes(params[:user])
       @customer.update_subscription(plan: current_user.plan.id)
-      redirect_to edit_user_registration_path, notice: 'Updated plan.'
+      redirect_to edit_user_registration_path, notice: 'Plan is updated.'
     end
   end
 
   def cancel_subscription
-    customer = Stripe::Customer.retrieve(current_user.stripe_customer_token)
-    customer.cancel_subscription if customer.subscription.status == 'active'
+    current_user.terminate_subscription
     current_user.update_attributes(plan_id: nil)
     redirect_to edit_user_registration_path, notice: 'Unsubscribed'
   end
