@@ -24,10 +24,20 @@ class RegistrationsController < Devise::RegistrationsController
       respond_with resource
     end
   end
+
   def update_card
     customer = Stripe::Customer.retrieve(current_user.stripe_customer_token)
     customer.card = params[:user][:stripe_card_token]
     customer.save
     redirect_to edit_user_registration_path, :notice => 'Updated card.'
+  end
+
+  def update_plan
+    if current_user.update_attributes(params[:user])
+      customer = Stripe::Customer.retrieve(current_user.stripe_customer_token)
+      customer.plan = current_user.plan.id
+      customer.save
+      redirect_to edit_user_registration_path, :notice => 'Updated plan.'
+    end
   end
 end
