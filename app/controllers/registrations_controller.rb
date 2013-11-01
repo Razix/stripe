@@ -41,8 +41,8 @@ class RegistrationsController < Devise::RegistrationsController
   def update_plan
     if current_user.update_attributes(params[:user])
       @customer.update_subscription(plan: current_user.plan.id)
-      # invoice = Stripe::Invoice.create(customer: @customer.id)
-      # invoice.pay
+      invoice = Stripe::Invoice.create(customer: @customer.id)
+      invoice.pay
       redirect_to edit_user_registration_path, notice: 'Plan is updated.'
     end
   end

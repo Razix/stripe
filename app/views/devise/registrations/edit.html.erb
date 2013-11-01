@@ -23,11 +23,6 @@
 <% end %>
 
 <hr>
-<h3>Cancel my account</h3>
-
-<p><i>You will be unsubscribed automatically</i> <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, class: "btn btn-danger", method: :delete %></p>
-
-<hr>
 <h3>Subscription</h3>
 <p>
   <% if @subscription %>
@@ -93,4 +88,9 @@
     </div>
   <% end %>
 </div>
+
+<hr>
+<h3>Cancel my account</h3>
+
+<p><i>You will be unsubscribed automatically</i> <%= button_to "Cancel my account", registration_path(resource_name), data: { confirm: "Are you sure?" }, class: "btn btn-danger", method: :delete %></p>
 <hr>
