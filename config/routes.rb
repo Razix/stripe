@@ -8,6 +8,11 @@ StripeApp::Application.routes.draw do
   end
   resources :plans
 
+  scope :plan do
+    put 'plan_update', to: 'plans#update_plan'
+    put 'subscription_termination', to: 'plans#cancel_subscription'
+  end
+
   root to: 'plans#index'
 
   # The priority is based upon order of creation:

@@ -1,2 +1,28 @@
 %h1= @plan.name
 Thanks for choosing me just for $#{@plan.price} !
+
+%hr/
+%h3 Subscription
+%p
+  - if @subscription
+    %p
+      %span.customer-details Status:
+      = @subscription.status.titleize
+    %p
+      %span.customer-details Plan:
+      = @subscription.plan.name.titleize
+    %p= button_to "Cancel subscription", subscription_termination_path, data: { confirm: "Are you sure?" }, class: "btn btn-mini btn-danger", method: :put
+  - else
+    %p.no-subscriptions
+      %i You are not subscribed to any of our plans . . .
+  %a#change-plan-button.btn.btn-mini{"data-toggle" => "modal", href: "#plan-options", type: "button"} Change plan
+#plan-options.modal{style: "display: none;"}
+  = form_for @plan, url: plan_update_path, html: {method: :put, id: 'update_plan', class: 'form-horizontal' } do |f|
+    .modal-header
+      %a.close{"data-dismiss" => "modal"} ×
+      %h3 Change Plan
+    .modal-body
+      = f.collection_select :id, Plan.all, :id, :name, prompt: true
+    .modal-footer
+      = f.submit "Change Plan", class: "btn btn-primary"
+      %a.btn{"data-dismiss" => "modal", href: "#"} Close
