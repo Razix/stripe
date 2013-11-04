@@ -22,10 +22,17 @@ class User < ActiveRecord::Base
       save!
     end
   end
+
   def terminate_subscription
     customer = Stripe::Customer.retrieve(stripe_customer_token)
     customer.cancel_subscription if customer.subscription.status == 'active'
   end
+
+  def subscribed?
+    customer = Stripe::Customer.retrieve(stripe_customer_token)
+    customer.subscription.present?
+  end
+
   rescue Stripe::InvalidRequestError => e
     logger.error "Stripe error while creating customer: #{e.mesage}"
     errors.add :base, "There was a problem with your credit card."

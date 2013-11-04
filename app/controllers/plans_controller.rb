@@ -29,13 +29,13 @@ class PlansController < ApplicationController
     @customer.update_subscription(plan: current_user.plan.id)
     invoice = Stripe::Invoice.create(customer: @customer.id)
     invoice.pay
-    redirect_to root_path, notice: 'Plan is updated.'
+    redirect_to plan_path(current_user.plan), notice: 'Plan is updated.'
   end
 
   def cancel_subscription
     current_user.terminate_subscription
     current_user.update_attributes(plan_id: nil)
-    redirect_to plan_path(current_user.plan), notice: 'Unsubscribed'
+    redirect_to root_path, notice: 'Unsubscribed'
   end
 
   private

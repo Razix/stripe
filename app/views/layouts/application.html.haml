@@ -11,6 +11,7 @@
       .navbar-inner
         .container
           = link_to "Main page", root_path, class: 'brand'
+          = link_to "Add new plan", new_plan_path, class: 'brand'
           .nav-collapse.right-side
             %ul.nav
               - if user_signed_in?
