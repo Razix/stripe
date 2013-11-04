@@ -21,6 +21,10 @@ class User < ActiveRecord::Base
       self.stripe_customer_token = customer.id
       save!
     end
+    rescue Stripe::StripeError => e
+      logger.error "Stripe Error: " + e.message
+      errors.add :base, "#{e.message}."
+      false
   end
 
   def terminate_subscription
